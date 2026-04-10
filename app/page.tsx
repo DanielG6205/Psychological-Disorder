@@ -130,9 +130,10 @@ export default function Home() {
 
       <section className="home-content">
         <p className="kicker">AP Psychology Mental Health Project</p>
-        <h1 className="home-title">[Your Disorder Topic Goes Here]</h1>
+        <h1 className="home-title">Persistent Depressive Disorder</h1>
         <p className="home-subtitle">
-          Replace this placeholder with your assigned disorder and group info.
+          Chronic depression marked by a low mood that lasts for years and can
+          affect motivation, thinking, relationships, and daily functioning.
         </p>
 
         <nav className="home-actions" aria-label="Project Sections">

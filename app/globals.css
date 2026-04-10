@@ -187,33 +187,94 @@ a:hover {
 }
 
 .doc-shell {
-  width: min(1500px, 96vw);
+  width: min(1280px, 94vw);
   margin: 0 auto;
-  padding: 2.3rem 0 3rem;
+  padding: 2rem 0 3.5rem;
+}
+
+.doc-header {
+  position: relative;
+}
+
+.doc-hero {
+  padding: clamp(1.4rem, 2vw, 2rem);
+  border: 1px solid rgba(76, 106, 170, 0.16);
+  border-radius: 1.75rem;
+  background:
+    radial-gradient(circle at top right, rgba(130, 167, 255, 0.2), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(99, 215, 216, 0.14), transparent 28%),
+    rgba(250, 252, 255, 0.92);
+  box-shadow: 0 24px 60px rgba(57, 81, 131, 0.1);
+}
+
+.doc-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.doc-topic-chip {
+  margin: 0;
+  padding: 0.48rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #2348a3;
+  background: rgba(78, 117, 212, 0.1);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .doc-header h1 {
   margin-top: 0.7rem;
-  font-size: clamp(2rem, 4.2vw, 3.2rem);
+  max-width: 14ch;
+  font-size: clamp(2.2rem, 4.6vw, 4rem);
+}
+
+.doc-hero-grid {
+  margin-top: 1.4rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.doc-hero-card {
+  padding: 1rem 1.05rem;
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(84, 112, 170, 0.12);
+}
+
+.doc-hero-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #63758a;
 }
 
 .lead {
   margin-top: 1rem;
   font-size: clamp(1.04rem, 1.3vw, 1.22rem);
-  max-width: 110ch;
+  max-width: 72ch;
+  color: #405264;
 }
 
 .doc-section {
-  margin-top: 1.8rem;
+  margin-top: 1.4rem;
 }
 
 .doc-section h2 {
   font-size: clamp(1.35rem, 2.6vw, 2rem);
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.9rem;
 }
 
 .doc-section h3 {
-  margin-top: 1rem;
+  margin-top: 0;
   font-size: clamp(1.1rem, 1.9vw, 1.4rem);
 }
 
@@ -221,11 +282,51 @@ a:hover {
 .doc-section ul + p,
 .doc-section p + ul,
 .doc-section ul + ul {
-  margin-top: 0.66rem;
+  margin-top: 0.82rem;
 }
 
 ul {
   padding-left: 1.2rem;
+}
+
+.doc-panel {
+  padding: 1.25rem 1.3rem;
+  border-radius: 1.35rem;
+  background: rgba(250, 252, 255, 0.92);
+  border: 1px solid rgba(88, 112, 158, 0.12);
+  box-shadow: 0 16px 40px rgba(76, 95, 138, 0.06);
+}
+
+.doc-checklist {
+  margin: 0;
+}
+
+.doc-checklist li + li {
+  margin-top: 0.45rem;
+}
+
+.doc-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.doc-card {
+  padding: 1.25rem 1.25rem 1.2rem;
+  border-radius: 1.35rem;
+  border: 1px solid rgba(84, 110, 166, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(246, 249, 255, 0.96) 100%);
+  box-shadow: 0 18px 42px rgba(71, 94, 149, 0.08);
+}
+
+.doc-card-tag {
+  margin-bottom: 0.5rem;
+  font-size: 0.77rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #2048b0;
 }
 
 .placeholder-line {
@@ -233,11 +334,77 @@ ul {
   font-style: italic;
 }
 
+.works-cited {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.works-cited p {
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(96, 120, 164, 0.12);
+}
+
+.works-cited p:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
 .doc-footer {
   margin-top: 2.2rem;
   display: flex;
   gap: 1.2rem;
   flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.handout-shell {
+  padding-bottom: 4rem;
+}
+
+.handout-shell .doc-panel + .doc-panel {
+  margin-top: 1rem;
+}
+
+@media print {
+  :root {
+    --bg: #ffffff;
+    --text: #000000;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .doc-shell,
+  .handout-shell {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .doc-hero,
+  .doc-panel,
+  .doc-card,
+  .doc-hero-card {
+    background: #ffffff;
+    box-shadow: none;
+    border: 1px solid #c7cfdb;
+  }
+
+  .doc-section,
+  .doc-card,
+  .doc-panel,
+  .doc-hero {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 @keyframes drift {
@@ -280,5 +447,20 @@ ul {
   .action-btn {
     flex: 1 1 44%;
     min-width: 140px;
+  }
+
+  .doc-hero-grid,
+  .doc-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doc-panel,
+  .doc-card,
+  .doc-hero {
+    border-radius: 1.1rem;
+  }
+
+  .doc-footer {
+    justify-content: flex-start;
   }
 }
