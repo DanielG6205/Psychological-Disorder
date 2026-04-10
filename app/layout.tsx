@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AP Psychology Project",
+  title: "Persistent Depressive Disorder",
   description:
-    "AP Psychology psychological disorder project website with Handout and Game sections.",
+    "Website about Persistent Depressive Disorder with Handout and Game sections.",
 };
 
 export default function RootLayout({

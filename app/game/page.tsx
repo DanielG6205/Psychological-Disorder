@@ -644,12 +644,10 @@ export default function GamePage() {
                 </h1>
                 <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
                   Persistent Depressive Disorder is a chronic form of depression
-                  involving a depressed mood for most of the day, more days than
-                  not, for at least 2 years in adults.
+                  involving a depressed mood for most of the day for at least 2 years in adults.
                 </p>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">
-                  This narrative game is not about perfect choices. It is about
-                  understanding how low mood, fatigue, hopelessness, poor
+                  This game is was made to understand how low mood, fatigue, hopelessness, poor
                   concentration, sleep problems, and support systems can shape
                   daily functioning over time.
                 </p>
@@ -1052,7 +1050,7 @@ export default function GamePage() {
 
             <div className="mt-6 rounded-[1.4rem] bg-slate-50 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                Educational Note
+                Note
               </p>
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 PDD often involves long-term low mood, fatigue, hopelessness,
