@@ -250,7 +250,7 @@ export default function HandoutPage() {
 
       <section className="doc-section">
         <div className="doc-panel">
-          <h2>Works Cited (APA Format)</h2>
+          <h2>Works Cited</h2>
           <div className="works-cited">
             <p>
               American Psychiatric Association. (2013). <em>

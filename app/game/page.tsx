@@ -47,6 +47,8 @@ const INITIAL_METERS: Meters = {
   support: 36,
 };
 
+const CHOICE_IMPACT_MULTIPLIER = 1.55;
+
 const METER_CONFIG: {
   key: MeterKey;
   label: string;
@@ -457,12 +459,22 @@ function clamp(value: number) {
   return Math.max(0, Math.min(100, value));
 }
 
-function applyEffects(meters: Meters, effects: Partial<Meters>) {
+function scaleEffect(value: number, multiplier: number) {
+  if (value === 0) return 0;
+
+  return Math.sign(value) * Math.max(1, Math.round(Math.abs(value) * multiplier));
+}
+
+function applyEffects(
+  meters: Meters,
+  effects: Partial<Meters>,
+  multiplier = 1
+) {
   return {
-    mood: clamp(meters.mood + (effects.mood ?? 0)),
-    energy: clamp(meters.energy + (effects.energy ?? 0)),
-    stress: clamp(meters.stress + (effects.stress ?? 0)),
-    support: clamp(meters.support + (effects.support ?? 0)),
+    mood: clamp(meters.mood + scaleEffect(effects.mood ?? 0, multiplier)),
+    energy: clamp(meters.energy + scaleEffect(effects.energy ?? 0, multiplier)),
+    stress: clamp(meters.stress + scaleEffect(effects.stress ?? 0, multiplier)),
+    support: clamp(meters.support + scaleEffect(effects.support ?? 0, multiplier)),
   };
 }
 
@@ -558,7 +570,11 @@ export default function GamePage() {
   }
 
   function handleChoice(choice: Choice) {
-    const withChoice = applyEffects(meters, choice.effects);
+    const withChoice = applyEffects(
+      meters,
+      choice.effects,
+      CHOICE_IMPACT_MULTIPLIER
+    );
     const queued = [
       ...pending,
       ...(choice.delayed?.map((effect) => ({
@@ -593,7 +609,11 @@ export default function GamePage() {
 
     let updatedMeters = applyEffects(withChoice, buildDailyLoad(withChoice));
     dueToday.forEach((effect) => {
-      updatedMeters = applyEffects(updatedMeters, effect.effects);
+      updatedMeters = applyEffects(
+        updatedMeters,
+        effect.effects,
+        CHOICE_IMPACT_MULTIPLIER
+      );
     });
 
     const delayedLabels = dueToday.map((effect) => effect.label);
@@ -611,9 +631,9 @@ export default function GamePage() {
 
   if (screen === "title") {
     return (
-      <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(147,197,253,0.22),_transparent_35%),linear-gradient(180deg,#f8fbff_0%,#ebf2fb_45%,#dfe8f4_100%)] px-6 py-8 text-slate-900">
+      <main className="game-screen game-title-screen min-h-screen bg-[radial-gradient(circle_at_top,_rgba(147,197,253,0.22),_transparent_35%),linear-gradient(180deg,#f8fbff_0%,#ebf2fb_45%,#dfe8f4_100%)] px-6 py-8 text-slate-900">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-          <section className="overflow-hidden rounded-[2rem] border border-sky-100 bg-white/85 p-8 shadow-[0_30px_80px_rgba(44,72,120,0.12)] backdrop-blur">
+          <section className="game-glass-card overflow-hidden rounded-[2rem] border border-sky-100 bg-white/85 p-8 shadow-[0_30px_80px_rgba(44,72,120,0.12)] backdrop-blur">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="rounded-full bg-sky-100 px-4 py-2 text-sm font-semibold uppercase tracking-[0.16em] text-sky-800">
                 AP Psychology Presentation Game
@@ -708,7 +728,7 @@ export default function GamePage() {
           </section>
 
           <section className="grid gap-4 md:grid-cols-3">
-            <article className="rounded-[1.5rem] border border-white/70 bg-white/75 p-5 shadow-[0_16px_40px_rgba(57,81,131,0.08)]">
+            <article className="game-info-card rounded-[1.5rem] border border-white/70 bg-white/75 p-5 shadow-[0_16px_40px_rgba(57,81,131,0.08)]">
               <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
                 What You Track
               </p>
@@ -717,7 +737,7 @@ export default function GamePage() {
                 choices and delayed effects.
               </p>
             </article>
-            <article className="rounded-[1.5rem] border border-white/70 bg-white/75 p-5 shadow-[0_16px_40px_rgba(57,81,131,0.08)]">
+            <article className="game-info-card rounded-[1.5rem] border border-white/70 bg-white/75 p-5 shadow-[0_16px_40px_rgba(57,81,131,0.08)]">
               <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
                 Core Idea
               </p>
@@ -726,7 +746,7 @@ export default function GamePage() {
                 Support and treatment can help gradually rather than instantly.
               </p>
             </article>
-            <article className="rounded-[1.5rem] border border-white/70 bg-white/75 p-5 shadow-[0_16px_40px_rgba(57,81,131,0.08)]">
+            <article className="game-info-card rounded-[1.5rem] border border-white/70 bg-white/75 p-5 shadow-[0_16px_40px_rgba(57,81,131,0.08)]">
               <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
                 Learning Goal
               </p>
@@ -793,9 +813,9 @@ export default function GamePage() {
         : "daily functioning still felt effortful and inconsistent";
 
     return (
-      <main className="min-h-screen bg-[linear-gradient(180deg,#f7fbff_0%,#e9f0f9_100%)] px-6 py-8 text-slate-900">
+      <main className="game-screen game-summary-screen min-h-screen bg-[linear-gradient(180deg,#f7fbff_0%,#e9f0f9_100%)] px-6 py-8 text-slate-900">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-          <section className="rounded-[2rem] border border-sky-100 bg-white/90 p-8 shadow-[0_28px_70px_rgba(44,72,120,0.12)]">
+          <section className="game-glass-card rounded-[2rem] border border-sky-100 bg-white/90 p-8 shadow-[0_28px_70px_rgba(44,72,120,0.12)]">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -832,7 +852,7 @@ export default function GamePage() {
               {METER_CONFIG.map((meter) => (
                 <article
                   key={meter.key}
-                  className={`rounded-[1.4rem] border border-slate-200 ${meter.bg} p-4`}
+                  className={`game-meter-card rounded-[1.4rem] border border-slate-200 ${meter.bg} p-4`}
                 >
                   <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
                     {meter.label}
@@ -957,7 +977,7 @@ export default function GamePage() {
                 {journal.map((entry) => (
                   <div
                     key={`${entry.day}-${entry.choice}`}
-                    className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4"
+                    className="game-journal-entry rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4"
                   >
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                       Day {entry.day} · {entry.title}
@@ -980,9 +1000,9 @@ export default function GamePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.18),_transparent_32%),linear-gradient(180deg,#f9fbfe_0%,#edf3f9_100%)] px-4 py-5 text-slate-900 sm:px-6">
+    <main className="game-screen game-play-screen min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.18),_transparent_32%),linear-gradient(180deg,#f9fbfe_0%,#edf3f9_100%)] px-4 py-5 text-slate-900 sm:px-6">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-5">
-        <header className="rounded-[1.9rem] border border-white/80 bg-white/88 p-5 shadow-[0_24px_60px_rgba(57,81,131,0.11)] backdrop-blur">
+        <header className="game-glass-card rounded-[1.9rem] border border-white/80 bg-white/88 p-5 shadow-[0_24px_60px_rgba(57,81,131,0.11)] backdrop-blur">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -1024,11 +1044,11 @@ export default function GamePage() {
         </header>
 
         <section className="grid gap-5 xl:grid-cols-[320px_minmax(0,1fr)_330px]">
-          <aside className="rounded-[1.8rem] border border-white/80 bg-white/88 p-5 shadow-[0_22px_50px_rgba(57,81,131,0.1)]">
+          <aside className="game-side-panel rounded-[1.8rem] border border-white/80 bg-white/88 p-5 shadow-[0_22px_50px_rgba(57,81,131,0.1)]">
             <h2 className="text-lg font-semibold text-slate-950">Status Meters</h2>
             <div className="mt-5 space-y-4">
               {METER_CONFIG.map((meter) => (
-                <div key={meter.key}>
+                <div className="game-meter-row" key={meter.key}>
                   <div className="mb-2 flex items-center justify-between text-sm">
                     <span className="font-medium text-slate-700">{meter.label}</span>
                     <span className="font-semibold text-slate-900">
@@ -1037,7 +1057,7 @@ export default function GamePage() {
                   </div>
                   <div className="h-3 overflow-hidden rounded-full bg-slate-200">
                     <div
-                      className={`h-full rounded-full bg-gradient-to-r ${meter.tone} transition-all duration-500 ease-out`}
+                      className={`game-meter-fill h-full rounded-full bg-gradient-to-r ${meter.tone} transition-all duration-500 ease-out`}
                       style={{ width: `${meters[meter.key]}%` }}
                     />
                   </div>
@@ -1061,7 +1081,7 @@ export default function GamePage() {
             </div>
           </aside>
 
-          <section className="rounded-[1.8rem] border border-white/80 bg-white/90 p-6 shadow-[0_24px_60px_rgba(57,81,131,0.1)]">
+          <section className="game-scenario-card rounded-[1.8rem] border border-white/80 bg-white/90 p-6 shadow-[0_24px_60px_rgba(57,81,131,0.1)]">
             <div className="inline-flex rounded-full bg-slate-100 px-4 py-1.5 text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
               Scenario
             </div>
@@ -1081,7 +1101,7 @@ export default function GamePage() {
                   key={choice.label}
                   type="button"
                   onClick={() => handleChoice(choice)}
-                  className="group rounded-[1.6rem] border border-slate-200 bg-slate-50 px-5 py-5 text-left transition duration-200 hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white hover:shadow-[0_16px_40px_rgba(57,81,131,0.08)]"
+                  className="game-choice-button group rounded-[1.6rem] border border-slate-200 bg-slate-50 px-5 py-5 text-left transition duration-200 hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white hover:shadow-[0_16px_40px_rgba(57,81,131,0.08)]"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -1101,7 +1121,7 @@ export default function GamePage() {
             </div>
           </section>
 
-          <aside className="rounded-[1.8rem] border border-white/80 bg-white/88 p-5 shadow-[0_22px_50px_rgba(57,81,131,0.1)]">
+          <aside className="game-side-panel rounded-[1.8rem] border border-white/80 bg-white/88 p-5 shadow-[0_22px_50px_rgba(57,81,131,0.1)]">
             <h2 className="text-lg font-semibold text-slate-950">Journal</h2>
             <p className="mt-2 text-sm leading-6 text-slate-600">
               Recent reflections show how choices changed the week over time.
@@ -1117,7 +1137,7 @@ export default function GamePage() {
                 journal.map((entry) => (
                   <div
                     key={`${entry.day}-${entry.choice}`}
-                    className="rounded-[1.4rem] border border-slate-200 bg-slate-50 px-4 py-4"
+                    className="game-journal-entry rounded-[1.4rem] border border-slate-200 bg-slate-50 px-4 py-4"
                   >
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                       Day {entry.day}

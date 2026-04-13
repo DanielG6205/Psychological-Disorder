@@ -98,6 +98,20 @@ export default function Home() {
           viewBox={`0 0 ${viewport.width} ${viewport.height}`}
           preserveAspectRatio="xMidYMid slice"
         >
+          <defs>
+            <linearGradient
+              id="homeRingGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" stopColor="#0ea5e9" />
+              <stop offset="38%" stopColor="#14b8a6" />
+              <stop offset="70%" stopColor="#facc15" />
+              <stop offset="100%" stopColor="#f43f5e" />
+            </linearGradient>
+          </defs>
           <rect
             className="ring-field-base"
             width={viewport.width}
@@ -119,8 +133,8 @@ export default function Home() {
                   viewport.height
                 )}
                 style={{
-                  opacity: Math.min(0.9, 0.26 + ringIndex * 0.024),
-                  strokeWidth: ringIndex % 5 === 0 ? 1.5 : 1.05,
+                  opacity: Math.min(0.96, 0.38 + ringIndex * 0.024),
+                  strokeWidth: ringIndex % 5 === 0 ? 3.2 : 2.15,
                 }}
               />
             ))}
@@ -145,7 +159,7 @@ export default function Home() {
           </Link>
         </nav>
       </section>
-      <p className="home-credits">Milan Shah, Annie Ribasl, Daniel Gao</p>
+      <p className="home-credits">Milan Shah, Annie Ribas, Daniel Gao</p>
     </main>
   );
 }
