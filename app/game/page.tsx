@@ -792,9 +792,7 @@ export default function GamePage() {
                     chronic symptoms can shape everyday life, and how treatment,
                     coping, and support can gradually help.
                   </p>
-                  <p className="rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
-                    This game is for learning and is not a diagnostic tool.
-                  </p>
+                
                 </div>
               </div>
             </div>
@@ -964,9 +962,6 @@ export default function GamePage() {
                   </p>
                 </div>
               </div>
-              <p className="mt-5 rounded-2xl border border-dashed border-slate-300 px-4 py-3 text-sm text-slate-600">
-                This game is for learning and is not a diagnostic tool.
-              </p>
             </article>
 
             <article className="rounded-[1.6rem] border border-slate-200 bg-white/90 p-6 shadow-[0_18px_50px_rgba(57,81,131,0.08)]">
@@ -1198,9 +1193,6 @@ export default function GamePage() {
               <p>
                 Some choices help immediately. Others create delayed benefits or
                 delayed costs on future days.
-              </p>
-              <p className="rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
-                This game is for learning and is not a diagnostic tool.
               </p>
             </div>
           </div>
