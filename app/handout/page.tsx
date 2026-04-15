@@ -34,7 +34,7 @@ export default function HandoutPage() {
             </article>
             <article className="doc-hero-card">
               <span className="doc-hero-label">Core Pattern</span>
-              <p>Depressed mood most of the day, more days than not.</p>
+              <p>Depressed mood most of the day.</p>
             </article>
             <article className="doc-hero-card">
               <span className="doc-hero-label">Why It Matters</span>
@@ -57,7 +57,9 @@ export default function HandoutPage() {
           <p>To be diagnosed with PDD, an individual must have:</p>
           <ul className="doc-checklist">
             <li>Depressed mood most of the time</li>
-            <li>At least two of the following symptoms:</li>
+          </ul>
+          <p>At least two of the following symptoms:</p>
+            <ul className="doc-checklist">
             <li>Poor appetite or overeating</li>
             <li>Insomnia or hypersomnia</li>
             <li>Low energy or fatigue</li>
@@ -117,7 +119,7 @@ export default function HandoutPage() {
           </article>
 
           <article className="doc-card">
-            <p className="doc-card-tag">Research Summary</p>
+            <p className="doc-card-tag">Summary</p>
             <p>
               Most researchers believe PDD develops from a combination of
               biological, psychological, and environmental influences rather
